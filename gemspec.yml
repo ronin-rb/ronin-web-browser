@@ -1,0 +1,28 @@
+name: ronin-web-browser
+summary: A Ruby library for automating the Chrome web browser
+description: |
+  ronin-web-browser is a Ruby library for automating the Chrome web browser.
+  ronin-web-browser builds on the ferrum gem, and adds additional API methods
+  that are useful to security researchers.
+
+license: LGPL-3.0
+authors: Postmodern
+email: postmodern.mod3@gmail.com
+homepage: https://ronin-rb.dev/
+has_yard: true
+
+metadata:
+  documentation_uri: https://ronin-rb.dev/docs/ronin-web-browser
+  source_code_uri:   https://github.com/ronin-rb/ronin-web-browser
+  bug_tracker_uri:   https://github.com/ronin-rb/ronin-web-browser/issues
+  changelog_uri:     https://github.com/ronin-rb/ronin-web-browser/blob/main/ChangeLog.md
+  rubygems_mfa_required: 'true'
+
+required_ruby_version: ">= 3.0.0"
+
+dependencies:
+  ronin-support: ~> 1.0
+  ferrum: ~> 0.13
+
+development_dependencies:
+  bundler: ~> 2.0
