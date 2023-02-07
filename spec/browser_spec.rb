@@ -73,17 +73,44 @@ describe Ronin::Web::Browser do
         end
       end
     end
+
+    after { subject.quit }
+  end
+
+  describe ".open" do
+    subject { described_class }
+
+    context "when given a block" do
+      it "must yield a new #{described_class} instance" do
+        expect { |b|
+          subject.open(&b)
+        }.to yield_successive_args(described_class)
+      end
+    end
+
+    context "when no block is given" do
+      it "must return a #{described_class}" do
+        browser = subject.open
+
+        expect(browser).to be_kind_of(described_class)
+        browser.quit
+      end
+    end
   end
 
   describe "#headless?" do
     it "must default to true" do
       expect(subject.headless?).to be(true)
     end
+
+    after { subject.quit }
   end
 
   describe "#visible?" do
     it "must default to false" do
       expect(subject.visible?).to be(false)
     end
+
+    after { subject.quit }
   end
 end
