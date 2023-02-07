@@ -21,6 +21,7 @@ that are useful to security researchers.
 
 * Automates the Chrome web browser.
 * Supports event hooks for requests and responses.
+* Small memory footprint (~50Kb Ruby + ~600Kb headless Chrome).
 * Has 81% documentation coverage.
 * Has 82% test coverage.
 
