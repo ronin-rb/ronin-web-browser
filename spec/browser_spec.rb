@@ -113,4 +113,28 @@ describe Ronin::Web::Browser do
 
     after { subject.quit }
   end
+
+  describe "#proxy?" do
+    context "when #proxy is set" do
+      let(:proxy_host) { 'example.com' }
+      let(:proxy_port) { 8080 }
+      let(:proxy) do
+        {host: proxy_host, port: proxy_port}
+      end
+
+      subject { described_class.new(proxy: proxy) }
+
+      it "must return true" do
+        expect(subject.proxy?).to be(true)
+      end
+    end
+
+    context "when #proxy is not set" do
+      it "must return false" do
+        expect(subject.proxy?).to be(false)
+      end
+    end
+
+    after { subject.quit }
+  end
 end
