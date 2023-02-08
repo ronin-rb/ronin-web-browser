@@ -86,7 +86,6 @@ module Ronin
     # 
     # ```ruby
     # browser = Ronin::Web::Browser.new
-    # browser.network.intercept
     # browser.on(:response) do |exchange|
     #   puts "> #{exchange.request.method} #{exchange.request.url}"
     # 
@@ -250,9 +249,11 @@ module Ronin
         case event
         when :response
           super('Network.responseReceived') do |params,index,total|
-            response = browser.network.select(params['requestId']).last
+            exchange = network.select(params['requestId']).last
 
-            block.call(response,index,total)
+            if exchange
+              block.call(exchange,index,total)
+            end
           end
         else
           super(event,&block)

@@ -84,7 +84,6 @@ Intercept all responses for all requests:
 
 ```ruby
 browser = Ronin::Web::Browser.new
-browser.network.intercept
 browser.on(:response) do |exchange|
   puts "> #{exchange.request.method} #{exchange.request.url}"
 
