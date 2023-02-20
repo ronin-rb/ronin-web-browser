@@ -278,6 +278,27 @@ module Ronin
         end
       end
 
+      #
+      # Passes every requested URL that matches the given pattern to the given
+      # block.
+      #
+      # @param [String, Regexp] pattern
+      #   The pattern to filter the URLs by.
+      #
+      # @yield [url]
+      #   The given block will be passed every URL that matches the pattern.
+      #
+      # @yieldparam [String] url
+      #   A matching URL requested by the browser.
+      #
+      def every_url_like(pattern)
+        every_url do |url|
+          if pattern.match(url)
+            yield url
+          end
+        end
+      end
+
     end
   end
 end
