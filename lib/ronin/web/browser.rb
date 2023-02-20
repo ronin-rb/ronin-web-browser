@@ -260,6 +260,24 @@ module Ronin
         end
       end
 
+      #
+      # Passes every requested URL to the given block.
+      #
+      # @yield [url]
+      #   The given block will be passed every URL.
+      #
+      # @yieldparam [String] url
+      #   A URL requested by the browser.
+      #
+      def every_url
+        network.intercept
+
+        on(:request) do |request|
+          yield request.url
+          request.continue
+        end
+      end
+
     end
   end
 end
