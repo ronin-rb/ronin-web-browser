@@ -17,11 +17,9 @@
 # along with ronin-web-browser.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ferrum'
-
 module Ronin
   module Web
-    class Browser < Ferrum::Browser
+    module Browser
       # ronin-web-browser version
       VERSION = '0.1.0'
     end
