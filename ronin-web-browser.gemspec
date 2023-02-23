@@ -1,5 +1,5 @@
-# encoding: utf-8
-
+# frozen_string_literal: true
+require 'English'
 require 'yaml'
 
 Gem::Specification.new do |gem|
@@ -7,12 +7,12 @@ Gem::Specification.new do |gem|
 
   gem.name    = gemspec.fetch('name')
   gem.version = gemspec.fetch('version') do
-                  lib_dir = File.join(File.dirname(__FILE__),'lib')
-                  $LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
+    lib_dir = File.join(File.dirname(__FILE__), 'lib')
+    $LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
 
-                  require 'ronin/web/browser/version'
-                  Ronin::Web::Browser::VERSION
-                end
+    require 'ronin/web/browser/version'
+    Ronin::Web::Browser::VERSION
+  end
 
   gem.summary     = gemspec['summary']
   gem.description = gemspec['description']
@@ -21,9 +21,9 @@ Gem::Specification.new do |gem|
   gem.email       = gemspec['email']
   gem.homepage    = gemspec['homepage']
 
-  glob = lambda { |patterns| gem.files & Dir[*patterns] }
+  glob = ->(patterns) { gem.files & Dir[*patterns] }
 
-  gem.files  = `git ls-files`.split($/)
+  gem.files  = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.files  = glob[gemspec['files']] if gemspec['files']
   gem.files += Array(gemspec['generated_files'])
   # exclude test files from the packages gem
@@ -36,26 +36,22 @@ Gem::Specification.new do |gem|
   gem.extensions       = glob[gemspec['extensions'] || 'ext/**/extconf.rb']
   gem.extra_rdoc_files = glob[gemspec['extra_doc_files'] || '*.{txt,md}']
 
-  gem.require_paths = Array(gemspec.fetch('require_paths') {
+  gem.require_paths = Array(gemspec.fetch('require_paths') do
     %w[ext lib].select { |dir| File.directory?(dir) }
-  })
+  end)
 
   gem.requirements              = gemspec['requirements']
   gem.required_ruby_version     = gemspec['required_ruby_version']
   gem.required_rubygems_version = gemspec['required_rubygems_version']
   gem.post_install_message      = gemspec['post_install_message']
 
-  split = lambda { |string| string.split(/,\s*/) }
+  split = ->(string) { string.split(/,\s*/) }
 
-  if gemspec['dependencies']
-    gemspec['dependencies'].each do |name,versions|
-      gem.add_dependency(name,split[versions])
-    end
+  gemspec['dependencies']&.each do |name, versions|
+    gem.add_dependency(name, split[versions])
   end
 
-  if gemspec['development_dependencies']
-    gemspec['development_dependencies'].each do |name,versions|
-      gem.add_development_dependency(name,split[versions])
-    end
+  gemspec['development_dependencies']&.each do |name, versions|
+    gem.add_development_dependency(name, split[versions])
   end
 end

@@ -1,0 +1,80 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.1
+
+#
+# our rules
+#
+
+Layout/FirstArrayElementIndentation: { Exclude: ['spec/**/*'] }
+Layout/LineLength: { Enabled: false }
+Layout/SpaceAroundEqualsInParameterDefault: { EnforcedStyle: no_space }
+Lint/ConstantDefinitionInBlock: { Exclude: ['spec/**/*'] }
+Metrics: { Enabled: false }
+Style/SymbolArray: { EnforcedStyle: brackets }
+Style/IfInsideElse: { Enabled: false } # Offense count: 1
+Style/PercentLiteralDelimiters:
+  Enabled: true
+  PreferredDelimiters:
+    default: '{}'
+    '%i': '[]'
+    '%I': '[]'
+    '%w': '[]'
+    '%W': '[]'
+Style/UnlessElse: { Enabled: false }
+Bundler/OrderedGems: { Enabled: false }
+Style/Next: { Enabled: false }
+Style/HashSyntax: { Enabled: false }
+Naming/BlockForwarding: { Enabled: false }
+Lint/ReturnInVoidContext: { Enabled: false }
+Lint/NoReturnInBeginEndBlocks: { Enabled: false }
+Gemspec/DeprecatedAttributeAssignment: { Enabled: false }
+Layout/EmptyLineAfterMagicComment: { Enabled: false }
+Layout/FirstArgumentIndentation: { Enabled: false }
+Layout/BeginEndAlignment: { Enabled: false }
+Layout/RescueEnsureAlignment: { Enabled: false }
+Style/MultilineBlockChain: { Enabled: false }
+Style/NumericLiterals: { Enabled: false }
+Style/RedundantInterpolation: { Enabled: false }
+Style/FormatString: { Enabled: false }
+Style/RedundantSelf: { Enabled: false }
+Style/FetchEnvVar: { Enabled: false }
+
+#
+# rules that are in flux
+#
+
+# consider enabling these and autocorrecting?
+# Layout/SpaceAfterComma
+# Layout/SpaceAroundKeyword
+# Layout/SpaceBeforeComma
+# Layout/SpaceInsideHashLiteralBraces
+# Layout/SpaceInsideParens
+# Layout/TrailingWhitespace
+# Lint/UnreachableLoop
+# Lint/UnusedBlockArgument
+# Style/ClassCheck
+# Style/Documentation
+# Style/ExpandPathArguments
+# Style/GlobalStdStream
+# Style/HashSyntax
+# Style/KeywordParametersOrder
+# Style/MethodCallWithoutArgsParentheses
+# Style/MutableConstant
+# Style/QuotedSymbols: { EnforcedStyle: double_quotes }
+# Style/RedundantReturn
+# Style/SafeNavigation
+# Style/SpecialGlobalVars
+# Style/StringLiterals: { EnforcedStyle: double_quotes }
+# Style/WordArray
+
+# rubocop cannot tell that rubygems_mfa_required is enabled in gemspec.yml
+Gemspec/RequireMFA: { Enabled: false }
+
+# make an exception for our gemspec code
+Gemspec/DuplicatedAssignment:
+  Enabled:
+    - 'ronin-web-template.gemspec'

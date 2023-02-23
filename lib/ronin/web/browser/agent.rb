@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # ronin-web-browser - An automated Chrome API.
 #
@@ -29,7 +30,6 @@ module Ronin
       # Represents an instance of a Chrome headless or visible browser.
       #
       class Agent < Ferrum::Browser
-
         # The configured proxy information.
         #
         # @return [Hash{Symbol => Object}, nil]
@@ -58,22 +58,22 @@ module Ronin
                   when Hash, nil then proxy
                   when URI::HTTP, Addressable::URI
                     {
-                      host:     proxy.host,
-                      port:     proxy.port,
-                      user:     proxy.user,
+                      host: proxy.host,
+                      port: proxy.port,
+                      user: proxy.user,
                       password: proxy.password
                     }
                   when String
                     uri = URI(proxy)
 
                     {
-                      host:     uri.host,
-                      port:     uri.port,
-                      user:     uri.user,
+                      host: uri.host,
+                      port: uri.port,
+                      user: uri.user,
                       password: uri.password
                     }
                   else
-                    raise(ArgumentError,"invalid proxy value (#{proxy.inspect}), must be either a Hash, URI::HTTP, String, or nil")
+                    raise(ArgumentError, "invalid proxy value (#{proxy.inspect}), must be either a Hash, URI::HTTP, String, or nil")
                   end
 
           @headless = headless
@@ -106,7 +106,7 @@ module Ronin
             browser.quit
           end
 
-          return browser
+          browser
         end
 
         #
@@ -168,18 +168,16 @@ module Ronin
         #
         # @yieldparam [Integer] total
         #
-        def on(event,&block)
+        def on(event, &block)
           case event
           when :response
-            super('Network.responseReceived') do |params,index,total|
+            super('Network.responseReceived') do |params, index, total|
               exchange = network.select(params['requestId']).last
 
-              if exchange
-                block.call(exchange,index,total)
-              end
+              block.call(exchange, index, total) if exchange
             end
           else
-            super(event,&block)
+            super(event, &block)
           end
         end
 
@@ -216,12 +214,9 @@ module Ronin
         #
         def every_url_like(pattern)
           every_url do |url|
-            if pattern.match(url)
-              yield url
-            end
+            yield url if pattern.match(url)
           end
         end
-
       end
     end
   end

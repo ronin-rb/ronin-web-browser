@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # ronin-web-browser - An automated Chrome API.
 #
@@ -28,47 +29,47 @@ module Ronin
     # ## Examples
     #
     # Initialize a headless browser:
-    # 
+    #
     # ```ruby
     # browser = Ronin::Web::Browser.new
     # # ...
     # browser.quit
     # ```
-    # 
+    #
     # Initialize a visible browser:
-    # 
+    #
     # ```ruby
     # browser = Ronin::Web::Browser.new(visible: true)
     # # ...
     # browser.quit
     # ```
-    # 
+    #
     # Opening a temporary browser and automatically quitting:
-    # 
+    #
     # ```ruby
     # Ronin::Web::Browser.open do |browser|
     #   # ...
     # end
     # ```
-    # 
+    #
     # Initializing the browser with a proxy:
-    # 
+    #
     # ```ruby
     # browser = Ronin::Web::Browser.new(proxy: "http://proxy.example.com:8080")
     # # ...
     # ```
-    # 
+    #
     # Go to and screenshot a webpage:
-    # 
+    #
     # ```ruby
     # Ronin::Web::Browser.open do |browser|
     #   browser.go_to("https://google.com")
     #   browser.screenshot(path: "google.png")
     # end
     # ```
-    # 
+    #
     # Intercept all requests:
-    # 
+    #
     # ```ruby
     # browser = Ronin::Web::Browser.new
     # browser.network.intercept
@@ -76,33 +77,33 @@ module Ronin
     #   puts "> #{request.method} #{request.url}"
     #   request.continue
     # end
-    # 
+    #
     # browser.go_to("https://twitter.com/login")
     # ```
-    # 
+    #
     # Intercept all responses for all requests:
-    # 
+    #
     # ```ruby
     # browser = Ronin::Web::Browser.new
     # browser.on(:response) do |exchange|
     #   puts "> #{exchange.request.method} #{exchange.request.url}"
-    # 
+    #
     #   puts "< HTTP #{exchange.response.status}"
-    # 
+    #
     #   exchange.response.headers.each do |name,value|
     #     puts "< #{name}: #{value}"
     #   end
-    # 
+    #
     #   puts exchange.response.body
     # end
-    # 
+    #
     # browser.go_to("https://twitter.com/login")
     # ```
-    # 
+    #
     # See [ferrum] for additional documentation.
     #
     # [ferrum]: https://github.com/rubycdp/ferrum#readme
-    # 
+    #
     module Browser
       #
       # Initializes the browser agent.
@@ -139,8 +140,8 @@ module Ronin
       # @return [Agent]
       #   A new instance of a headless or visible Chrome browser.
       #
-      def self.open(**kwargs,&block)
-        Agent.open(**kwargs,&block)
+      def self.open(**kwargs, &block)
+        Agent.open(**kwargs, &block)
       end
     end
   end
