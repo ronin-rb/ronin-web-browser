@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rubygems'
 
 begin
@@ -5,7 +6,7 @@ begin
 rescue LoadError => e
   warn e.message
   warn "Run `gem install bundler` to install Bundler"
-  exit -1
+  exit(-1)
 end
 
 begin
