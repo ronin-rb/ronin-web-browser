@@ -1,5 +1,4 @@
-# encoding: utf-8
-
+# frozen_string_literal: true
 require 'yaml'
 
 Gem::Specification.new do |gem|
@@ -21,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.email       = gemspec['email']
   gem.homepage    = gemspec['homepage']
 
-  glob = lambda { |patterns| gem.files & Dir[*patterns] }
+  glob = ->(patterns) { gem.files & Dir[*patterns] }
 
   gem.files  = `git ls-files`.split($/)
   gem.files  = glob[gemspec['files']] if gemspec['files']
@@ -45,7 +44,7 @@ Gem::Specification.new do |gem|
   gem.required_rubygems_version = gemspec['required_rubygems_version']
   gem.post_install_message      = gemspec['post_install_message']
 
-  split = lambda { |string| string.split(/,\s*/) }
+  split = ->(string) { string.split(/,\s*/) }
 
   if gemspec['dependencies']
     gemspec['dependencies'].each do |name,versions|
