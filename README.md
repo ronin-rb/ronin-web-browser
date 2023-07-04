@@ -99,6 +99,15 @@ end
 browser.go_to("https://twitter.com/login")
 ```
 
+Evaluate JavaScript within the current page:
+
+```ruby
+browser = Ronin::Web::Browser.new
+browser.goto('https://github.com')
+browser.eval_js('document.cookie')
+# => "..."
+```
+
 See [ferrum] for additional documentation.
 
 ## Requirements

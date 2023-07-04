@@ -223,6 +223,28 @@ module Ronin
           end
         end
 
+        #
+        # Queries all `<a href="...">` links in the current page.
+        #
+        # @return [Array<String>]
+        #
+        def links
+          xpath('//a/@href').map(&:value)
+        end
+
+        #
+        # All link URLs in the current page.
+        #
+        # @return [Array<URI::HTTP, URI::HTTPS>]
+        #
+        def urls
+          page_uri = URI.parse(self.url)
+
+          links.map { |link| page_uri.merge(link) }
+        end
+
+        alias eval_js evaluate
+
       end
     end
   end
