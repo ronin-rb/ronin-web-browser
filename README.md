@@ -108,6 +108,18 @@ browser.eval_js('document.cookie')
 # => "..."
 ```
 
+Load a JavaScript file into the current page as a `<script>` tag:
+
+```ruby
+browser.load_js(url: 'https://.../file.js')
+```
+
+Load JavaScript code into the current page as a `<script>` tag:
+
+```ruby
+browser.load_js(content: '...')
+```
+
 See [ferrum] for additional documentation.
 
 ## Requirements
