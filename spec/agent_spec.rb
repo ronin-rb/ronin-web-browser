@@ -137,4 +137,16 @@ describe Ronin::Web::Browser::Agent do
 
     after { subject.quit }
   end
+
+  describe "#bypass_csp=" do
+    context "when given true" do
+      before { subject.bypass_csp = true }
+
+      it "must enable #bypass_csp" do
+        expect(subject.bypass_csp).to be(true)
+      end
+    end
+
+    after { subject.quit }
+  end
 end
