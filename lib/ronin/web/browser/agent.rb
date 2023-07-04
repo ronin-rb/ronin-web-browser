@@ -245,6 +245,7 @@ module Ronin
 
         alias eval_js evaluate
         alias load_js add_script_tag
+        alias inject_js evaluate_on_new_document
 
       end
     end

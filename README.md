@@ -120,6 +120,12 @@ Load JavaScript code into the current page as a `<script>` tag:
 browser.load_js(content: '...')
 ```
 
+Inject JavaScript code into *every* page:
+
+```ruby
+browser.inject_js('...')
+```
+
 See [ferrum] for additional documentation.
 
 ## Requirements
