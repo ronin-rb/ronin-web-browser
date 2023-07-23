@@ -1,0 +1,2 @@
+foo=bar; Domain=example.com; Expires=Sat, 22 Jul 3000 06:00:54 GMT; Secure
+baz=qux; Domain=other.com; Expires=Sat, 22 Jul 3000 06:00:54 GMT; HttpOnly

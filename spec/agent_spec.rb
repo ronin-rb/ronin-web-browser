@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'ronin/web/browser/agent'
 
+require 'tempfile'
+
 describe Ronin::Web::Browser::Agent do
   describe "#initialize" do
     context "when Ronin::Support::Network::HTTP.proxy is set" do
@@ -145,6 +147,160 @@ describe Ronin::Web::Browser::Agent do
       it "must enable #bypass_csp" do
         expect(subject.bypass_csp).to be(true)
       end
+    end
+
+    after { subject.quit }
+  end
+
+  describe "#each_session_cookie" do
+    context "when there are session cookies" do
+      let(:name1)   { 'rack.session' }
+      let(:value1)  { 'BAh7CEkiD3Nlc3Npb25faWQGOgZFVG86HVJhY2s6OlNlc3Npb246OlNlc3Npb25JZAY6D0BwdWJsaWNfaWRJIkUyYWJkZTdkM2I0YTMxNDE5OThiYmMyYTE0YjFmMTZlNTNlMWMzYWJlYzhiYzc4ZjVhMGFlMGUwODJmMjJlZGIxBjsARkkiCWNzcmYGOwBGSSIxNHY1TmRCMGRVaklXdjhzR3J1b2ZhM2xwNHQyVGp5ZHptckQycjJRWXpIZz0GOwBGSSINdHJhY2tpbmcGOwBGewZJIhRIVFRQX1VTRVJfQUdFTlQGOwBUSSItOTkxNzUyMWYzN2M4ODJkNDIyMzhmYmI5Yzg4MzFmMWVmNTAwNGQyYwY7AEY%3D--02184e43850f38a46c8f22ffb49f7f22be58e272' }
+      let(:domain1) { 'rails-app.com' }
+
+      let(:name2)   { '_foo_sess' }
+      let(:value2)  { 'eyJmb28iOiJiYXIifQ:1pQcTx:UufiSnuPIjNs7zOAJS0UpqnyvRt7KET7BVes0I8LYbA' }
+      let(:domain2) { 'foo-app.com' }
+
+      before do
+        subject.cookies.set(name: name1, value: value1, domain: domain1, session: true)
+        subject.cookies.set(name: name2, value: value2, domain: domain2, session: true)
+      end
+
+      context "when a block is given" do
+        it "must yield each session cookie" do
+          yielded_cookies = []
+
+          subject.each_session_cookie do |cookie|
+            yielded_cookies << cookie
+          end
+
+          expect(yielded_cookies).to all(be_kind_of(Ferrum::Cookies::Cookie))
+          expect(yielded_cookies.length).to eq(2)
+          expect(yielded_cookies[0].name).to eq(name1)
+          expect(yielded_cookies[0].value).to eq(value1)
+          expect(yielded_cookies[0].domain).to eq(domain1)
+          expect(yielded_cookies[0].session?).to be(true)
+
+          expect(yielded_cookies[1].name).to eq(name2)
+          expect(yielded_cookies[1].value).to eq(value2)
+          expect(yielded_cookies[1].domain).to eq(domain2)
+          expect(yielded_cookies[1].session?).to be(true)
+        end
+      end
+    end
+
+    context "when no session cookie is set" do
+      context "when a block is given" do
+        it "must not yield any cookies" do
+          expect { |b|
+            subject.each_session_cookie(&b)
+          }.to_not yield_control
+        end
+      end
+    end
+
+    after { subject.quit }
+  end
+
+  describe "#session_cookies" do
+    let(:name1)   { 'rack.session' }
+    let(:value1)  { 'BAh7CEkiD3Nlc3Npb25faWQGOgZFVG86HVJhY2s6OlNlc3Npb246OlNlc3Npb25JZAY6D0BwdWJsaWNfaWRJIkUyYWJkZTdkM2I0YTMxNDE5OThiYmMyYTE0YjFmMTZlNTNlMWMzYWJlYzhiYzc4ZjVhMGFlMGUwODJmMjJlZGIxBjsARkkiCWNzcmYGOwBGSSIxNHY1TmRCMGRVaklXdjhzR3J1b2ZhM2xwNHQyVGp5ZHptckQycjJRWXpIZz0GOwBGSSINdHJhY2tpbmcGOwBGewZJIhRIVFRQX1VTRVJfQUdFTlQGOwBUSSItOTkxNzUyMWYzN2M4ODJkNDIyMzhmYmI5Yzg4MzFmMWVmNTAwNGQyYwY7AEY%3D--02184e43850f38a46c8f22ffb49f7f22be58e272' }
+    let(:domain1) { 'rails-app.com' }
+
+    let(:name2)   { '_foo_sess' }
+    let(:value2)  { 'eyJmb28iOiJiYXIifQ:1pQcTx:UufiSnuPIjNs7zOAJS0UpqnyvRt7KET7BVes0I8LYbA' }
+    let(:domain2) { 'foo-app.com' }
+
+    before do
+      subject.cookies.set(name: name1, value: value1, domain: domain1, session: true)
+      subject.cookies.set(name: name2, value: value2, domain: domain2, session: true)
+    end
+
+    it "must return an Array of session cookies" do
+      session_cookies = subject.session_cookies
+
+      expect(session_cookies).to be_kind_of(Array)
+      expect(session_cookies.length).to eq(2)
+      expect(session_cookies).to all(be_kind_of(Ferrum::Cookies::Cookie))
+      expect(session_cookies[0].name).to eq(name1)
+      expect(session_cookies[0].value).to eq(value1)
+      expect(session_cookies[0].domain).to eq(domain1)
+      expect(session_cookies[0].session?).to be(true)
+
+      expect(session_cookies[1].name).to eq(name2)
+      expect(session_cookies[1].value).to eq(value2)
+      expect(session_cookies[1].domain).to eq(domain2)
+      expect(session_cookies[1].session?).to be(true)
+    end
+
+    after { subject.quit }
+  end
+
+  describe "#set_cookie" do
+    let(:name)   { 'foo' }
+    let(:value)  { 'bar' }
+    let(:domain) { 'example.com' }
+
+    before do
+      subject.set_cookie(name,value, domain: domain)
+    end
+
+    it "must set the cookie with the given name and value, and additional options" do
+      cookie = subject.cookies[name]
+
+      expect(cookie).to be_kind_of(Ferrum::Cookies::Cookie)
+      expect(cookie.name).to eq(name)
+      expect(cookie.value).to eq(value)
+      expect(cookie.domain).to eq(domain)
+    end
+
+    after { subject.quit }
+  end
+
+  let(:fixtures_dir) { File.join(__dir__,'fixtures') }
+
+  describe "#load_cookies" do
+    let(:cookie_file) { File.join(fixtures_dir,'cookies.txt') }
+
+    before { subject.load_cookies(cookie_file) }
+
+    it "must parse and load all cookies from the cookie file" do
+      cookies = subject.cookies.to_a
+
+      expect(cookies).to all(be_kind_of(Ferrum::Cookies::Cookie))
+      expect(cookies.length).to eq(2)
+      expect(cookies[0].name).to eq('foo')
+      expect(cookies[0].value).to eq('bar')
+      expect(cookies[0].domain).to eq('example.com')
+      expect(cookies[0].secure?).to be(true)
+
+      expect(cookies[1].name).to eq('baz')
+      expect(cookies[1].value).to eq('qux')
+      expect(cookies[1].domain).to eq('other.com')
+      expect(cookies[1].http_only?).to be(true)
+    end
+
+    after { subject.quit }
+  end
+
+  describe "#save_cookies" do
+    let(:tempfile)    { Tempfile.new }
+    let(:output_path) { tempfile.path }
+
+    before do
+      subject.cookies.set(name: 'foo', value: 'bar', domain: 'example.com', secure: true)
+      subject.cookies.set(name: 'baz', value: 'qux', domain: 'other.com', http_only: true)
+
+      subject.save_cookies(output_path)
+    end
+
+    it "must write all cookies to the output file" do
+      cookies = File.readlines(output_path, chomp: true)
+
+      expect(cookies.length).to eq(2)
+      expect(cookies[0]).to match(%r{\Afoo=bar; Domain=example.com; Path=/; Expires=[^;]+; Secure\z})
+      expect(cookies[1]).to match(%r{\Abaz=qux; Domain=other.com; Path=/; Expires=[^;]+\z})
     end
 
     after { subject.quit }

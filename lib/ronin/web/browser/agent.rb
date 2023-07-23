@@ -18,6 +18,8 @@
 # along with ronin-web-browser.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+require 'ronin/web/browser/cookie'
+require 'ronin/web/browser/cookie_file'
 require 'ronin/support/network/http'
 
 require 'ferrum'
@@ -258,6 +260,74 @@ module Ronin
           if mode then bypass_csp(enabled: true)
           else         bypass_csp(enabled: false)
           end
+        end
+
+        #
+        # Enumerates over all session cookies.
+        #
+        # @yield [cookie]
+        #   The given block will be passed each session cookie.
+        #
+        # @yieldparam [Ferrum::Cookies::Cookie] cookie
+        #   A cookie that ends with `sess` or `session`.
+        #
+        # @return [Enumerator]
+        #   If no block is given, then an Enumerator object will be returned.
+        #
+        def each_session_cookie
+          return enum_for(__method__) unless block_given?
+
+          cookies.each do |cookie|
+            yield cookie if cookie.session?
+          end
+        end
+
+        #
+        # Fetches all session cookies.
+        #
+        # @return [Array<Ferrum::Cookie>]
+        #   The matching session cookies.
+        #
+        def session_cookies
+          each_session_cookie.to_a
+        end
+
+        #
+        # Sets a cookie.
+        #
+        # @param [String] name
+        #   The cookie name.
+        #
+        # @param [String] value
+        #   The cookie value.
+        #
+        # @param [Hash{Symbol => Object}] options
+        #   Additional cookie attributes.
+        #
+        def set_cookie(name,value,**options)
+          cookies.set(name: name, value: value, **options)
+        end
+
+        #
+        # Loads the cookies from the cookie file.
+        #
+        # @param [String] path
+        #   The path to the cookie file.
+        #
+        def load_cookies(path)
+          CookieFile.new(path).each do |cookie|
+            cookies.set(cookie)
+          end
+        end
+
+        #
+        # Saves the cookies to a cookie file.
+        #
+        # @param [String] path
+        #   The path to the output cookie file.
+        #
+        def save_cookies(path)
+          CookieFile.save(path,cookies)
         end
 
       end
