@@ -241,6 +241,15 @@ module Ronin
         end
 
         #
+        # The page's current URI.
+        #
+        # @return [URI::HTTP]
+        #
+        def page_uri
+          URI.parse(url)
+        end
+
+        #
         # Queries all `<a href="...">` links in the current page.
         #
         # @return [Array<String>]
@@ -255,7 +264,7 @@ module Ronin
         # @return [Array<URI::HTTP, URI::HTTPS>]
         #
         def urls
-          page_uri = URI.parse(self.url)
+          page_uri = self.page_uri
 
           links.map { |link| page_uri.merge(link) }
         end

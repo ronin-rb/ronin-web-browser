@@ -184,6 +184,16 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#page_uri" do
+    it "must return the parsed URI version of #url" do
+      subject.goto('https://example.com')
+
+      expect(subject.page_uri).to eq(URI.parse('https://example.com/'))
+    end
+
+    after { subject.quit }
+  end
+
   describe "#each_session_cookie" do
     context "when there are session cookies" do
       let(:name1)   { 'rack.session' }
