@@ -262,6 +262,20 @@ module Ronin
         end
 
         #
+        # Queries the XPath or CSS-path query and returns the matching nodes.
+        #
+        # @return [Array<Ferrum::Node>]
+        #   The matching node.
+        #
+        def search(query)
+          if query.start_with?('/')
+            xpath(query)
+          else
+            css(query)
+          end
+        end
+
+        #
         # Queries the XPath or CSS-path query and returns the first match.
         #
         # @return [Ferrum::Node, nil]

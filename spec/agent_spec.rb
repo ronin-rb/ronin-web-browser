@@ -194,6 +194,28 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#search" do
+    context "when the given query begins with a '/' character" do
+      let(:query) { '//div' }
+
+      it "must call #xpath" do
+        expect(subject).to receive(:xpath).with(query)
+
+        subject.search(query)
+      end
+    end
+
+    context "when the given query does not begin with a '/' character" do
+      let(:query) { '#foo' }
+
+      it "must call #css" do
+        expect(subject).to receive(:css).with(query)
+
+        subject.search(query)
+      end
+    end
+  end
+
   describe "#at" do
     context "when the given query begins with a '/' character" do
       let(:query) { '//div' }
