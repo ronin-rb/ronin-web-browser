@@ -138,6 +138,18 @@ module Ronin
         end
 
         #
+        # Enables or disables bypassing CSP.
+        #
+        # @param [Boolean] mode
+        #   Controls whether to enable or disable CSP bypassing.
+        #
+        def bypass_csp=(mode)
+          if mode then bypass_csp(enabled: true)
+          else         bypass_csp(enabled: false)
+          end
+        end
+
+        #
         # Registers a callback for the given event type.
         #
         # @param [:request, :response, :dialog, String] event
@@ -273,18 +285,6 @@ module Ronin
         alias load_js add_script_tag
         alias inject_js evaluate_on_new_document
         alias load_css add_style_tag
-
-        #
-        # Enables or disables bypassing CSP.
-        #
-        # @param [Boolean] mode
-        #   Controls whether to enable or disable CSP bypassing.
-        #
-        def bypass_csp=(mode)
-          if mode then bypass_csp(enabled: true)
-          else         bypass_csp(enabled: false)
-          end
-        end
 
         #
         # Enumerates over all session cookies.
