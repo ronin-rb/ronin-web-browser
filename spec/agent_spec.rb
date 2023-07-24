@@ -168,6 +168,22 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#every_url" do
+    it "must yield every requested URL" do
+      yielded_urls = []
+
+      subject.every_url do |url|
+        yielded_urls << url
+      end
+
+      subject.goto('https://example.com/')
+
+      expect(yielded_urls).to eq(%w[https://example.com/])
+    end
+
+    after { subject.quit }
+  end
+
   describe "#each_session_cookie" do
     context "when there are session cookies" do
       let(:name1)   { 'rack.session' }
