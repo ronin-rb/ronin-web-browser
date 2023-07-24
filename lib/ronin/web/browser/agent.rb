@@ -157,7 +157,7 @@ module Ronin
         # @yield [params, index, total]
         #   Other event types will be passed a params Hash, index, and total.
         #
-        # @yieldparam [Ferrum::Network::Request] request
+        # @yieldparam [Ferrum::Network::InterceptedRequest] request
         #   A network request object.
         #
         # @yieldparam [Ferrum::Network::Exchange] exchange
