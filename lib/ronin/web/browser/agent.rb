@@ -214,11 +214,8 @@ module Ronin
         #   A URL requested by the browser.
         #
         def every_url
-          network.intercept
-
-          on(:request) do |request|
+          every_request do |request|
             yield request.url
-            request.continue
           end
         end
 
