@@ -152,6 +152,22 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#every_request" do
+    it "must yield each Ferrum::Network::Request" do
+      yielded_request = nil
+
+      subject.every_request do |request|
+        yielded_request = request
+      end
+
+      subject.goto('https://example.com/')
+
+      expect(yielded_request).to be_kind_of(Ferrum::Network::InterceptedRequest)
+    end
+
+    after { subject.quit }
+  end
+
   describe "#each_session_cookie" do
     context "when there are session cookies" do
       let(:name1)   { 'rack.session' }

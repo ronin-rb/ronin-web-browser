@@ -187,6 +187,24 @@ module Ronin
         end
 
         #
+        # Passes every request to the given block.
+        #
+        # @yield [request]
+        #   The given block will be passed each request before it's sent.
+        #
+        # @yieldparam [Ferrum::Network::InterceptRequest] request
+        #   A network request object.
+        #
+        def every_request
+          network.intercept
+
+          on(:request) do |request|
+            yield request
+            request.continue
+          end
+        end
+
+        #
         # Passes every requested URL to the given block.
         #
         # @yield [url]
