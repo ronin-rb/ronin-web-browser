@@ -262,6 +262,20 @@ module Ronin
         end
 
         #
+        # Queries the XPath or CSS-path query and returns the first match.
+        #
+        # @return [Ferrum::Node, nil]
+        #   The first matching node.
+        #
+        def at(query)
+          if query.start_with?('/')
+            at_xpath(query)
+          else
+            at_css(query)
+          end
+        end
+
+        #
         # Queries all `<a href="...">` links in the current page.
         #
         # @return [Array<String>]

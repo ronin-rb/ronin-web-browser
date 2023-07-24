@@ -194,6 +194,28 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#at" do
+    context "when the given query begins with a '/' character" do
+      let(:query) { '//div' }
+
+      it "must call #at_xpath" do
+        expect(subject).to receive(:at_xpath).with(query)
+
+        subject.at(query)
+      end
+    end
+
+    context "when the given query does not begin with a '/' character" do
+      let(:query) { '#foo' }
+
+      it "must call #at_css" do
+        expect(subject).to receive(:at_css).with(query)
+
+        subject.at(query)
+      end
+    end
+  end
+
   describe "#each_session_cookie" do
     context "when there are session cookies" do
       let(:name1)   { 'rack.session' }
