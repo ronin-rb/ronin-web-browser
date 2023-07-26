@@ -168,6 +168,23 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#every_response" do
+    it "must yield each Ferrum::Network::Request" do
+      yielded_responses = []
+
+      subject.every_response do |exchange|
+        yielded_responses << exchange
+      end
+
+      subject.goto('https://example.com/')
+
+      expect(yielded_responses).to_not be_empty
+      expect(yielded_responses).to all(be_kind_of(Ferrum::Network::Exchange))
+    end
+
+    after { subject.quit }
+  end
+
   describe "#every_url" do
     it "must yield every requested URL" do
       yielded_urls = []
