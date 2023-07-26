@@ -223,12 +223,13 @@ module Ronin
         #   The given block will be passed the network exchange object
         #   containing both the request and the response objects.
         #
-        #
         # @yieldparam [Ferrum::Network::Exchange] exchange
         #   A network exchange containing both the request and response objects.
         #
-        def every_response(&block)
-          on(:response,&block)
+        def every_response
+          on(:response) do |exchange,index,total|
+            yield exchange
+          end
         end
 
         #
