@@ -169,17 +169,39 @@ describe Ronin::Web::Browser::Agent do
   end
 
   describe "#every_response" do
-    it "must yield each Ferrum::Network::Request" do
-      yielded_responses = []
+    context "when the given block accepts a single argument" do
+      it "must yield each Ferrum::Network::Response object" do
+        yielded_responses = []
 
-      subject.every_response do |exchange|
-        yielded_responses << exchange
+        subject.every_response do |response|
+          yielded_responses << response
+        end
+
+        subject.goto('https://example.com/')
+
+        expect(yielded_responses).to_not be_empty
+        expect(yielded_responses).to all(be_kind_of(Ferrum::Network::Response))
       end
+    end
 
-      subject.goto('https://example.com/')
+    context "when the given block accepts two arguments" do
+      it "must yield each Ferrum::Network::Response and Ferrum::Network::Request objects" do
+        yielded_responses = []
+        yielded_requests  = []
 
-      expect(yielded_responses).to_not be_empty
-      expect(yielded_responses).to all(be_kind_of(Ferrum::Network::Exchange))
+        subject.every_response do |response,request|
+          yielded_responses << response
+          yielded_requests  << request
+        end
+
+        subject.goto('https://example.com/')
+
+        expect(yielded_responses).to_not be_empty
+        expect(yielded_responses).to all(be_kind_of(Ferrum::Network::Response))
+
+        expect(yielded_requests).to_not be_empty
+        expect(yielded_requests).to all(be_kind_of(Ferrum::Network::Request))
+      end
     end
 
     after { subject.quit }

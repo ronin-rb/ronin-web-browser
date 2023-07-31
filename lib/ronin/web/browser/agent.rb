@@ -193,6 +193,8 @@ module Ronin
                 block.call(exchange,index,total)
               end
             end
+          when :close
+            super('Inspector.detached',&block)
           else
             super(event,&block)
           end
@@ -219,16 +221,27 @@ module Ronin
         #
         # Passes every response to the given block.
         #
-        # @yield [exchange]
-        #   The given block will be passed the network exchange object
-        #   containing both the request and the response objects.
+        # @yield [response]
+        #   If the given block accepts a single argument, it will be passed
+        #   each response object.
         #
-        # @yieldparam [Ferrum::Network::Exchange] exchange
-        #   A network exchange containing both the request and response objects.
+        # @yield [response, request]
+        #   If the given block accepts two arguments, it will be passed the
+        #   response and the request objects.
         #
-        def every_response
+        # @yieldparam [Ferrum::Network::Response] response
+        #   A respone object returned for a request.
+        #
+        # @yieldparam [Ferrum::Network::Request] request
+        #   The request object for the response.
+        #
+        def every_response(&block)
           on(:response) do |exchange,index,total|
-            yield exchange
+            if block.arity == 2
+              yield exchange.response, exchange.request
+            else
+              yield exchange.response
+            end
           end
         end
 
