@@ -411,6 +411,19 @@ module Ronin
           CookieFile.save(path,cookies)
         end
 
+        #
+        # Waits indefinitely until the browser window is closed.
+        #
+        def wait_until_closed
+          window_closed = false
+
+          on('Inspector.detached') do
+            window_closed = true
+          end
+
+          sleep(1) until window_closed
+        end
+
       end
     end
   end
