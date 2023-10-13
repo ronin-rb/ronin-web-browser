@@ -70,10 +70,8 @@ Intercept all requests:
 
 ```ruby
 browser = Ronin::Web::Browser.new
-browser.network.intercept
-browser.on(:request) do |request|
+browser.every_request do |request|
   puts "> #{request.method} #{request.url}"
-  request.continue
 end
 
 browser.go_to("https://twitter.com/login")
@@ -83,16 +81,16 @@ Intercept all responses for all requests:
 
 ```ruby
 browser = Ronin::Web::Browser.new
-browser.on(:response) do |exchange|
-  puts "> #{exchange.request.method} #{exchange.request.url}"
+browser.every_response do |response,request|
+  puts "> #{request.method} #{request.url}"
 
-  puts "< HTTP #{exchange.response.status}"
+  puts "< HTTP #{response.status}"
 
-  exchange.response.headers.each do |name,value|
+  response.headers.each do |name,value|
     puts "< #{name}: #{value}"
   end
 
-  puts exchange.response.body
+  puts response.body
 end
 
 browser.go_to("https://twitter.com/login")
