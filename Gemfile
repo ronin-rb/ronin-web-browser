@@ -8,7 +8,7 @@ gem 'jruby-openssl',	'~> 0.7', platforms: :jruby
 # gem 'ronin-support',	       '~> 1.0', github: "ronin-rb/ronin-support",
 #                                        branch: 'main'
 
-gem 'ferrum', github: 'rubycdp/ferrum'
+# gem 'ferrum', github: 'rubycdp/ferrum'
 
 group :development do
   gem 'rake'
