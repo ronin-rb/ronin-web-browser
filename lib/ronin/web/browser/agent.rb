@@ -39,7 +39,7 @@ module Ronin
         attr_reader :proxy
 
         #
-        # Initializes the browser agent.
+        # Initializes the browser agent, and optionally navigates to the url, if provided.
         #
         # @param [Boolean] visible
         #   Controls whether the browser will start in visible or headless mode.
@@ -50,12 +50,16 @@ module Ronin
         # @param [String, URI::HTTP, Addressible::URI, Hash, nil] proxy
         #   The proxy to send all browser requests through.
         #
+        # @param [String, nil] url
+        #   Provides url for browser to navigate to after initialization.
+        #
         # @param [Hash{Symbol => Object}] kwargs
         #   Additional keyword arguments for `Ferrum::Browser#initialize`.
         #
         def initialize(visible:  false,
                        headless: !visible,
                        proxy:    Ronin::Support::Network::HTTP.proxy,
+                       url:      nil,
                        **kwargs)
           proxy = case proxy
                   when Hash, nil then proxy
@@ -83,6 +87,7 @@ module Ronin
           @proxy    = proxy
 
           super(headless: headless, proxy: proxy, **kwargs)
+          go_to(url) if url
         end
 
         #
