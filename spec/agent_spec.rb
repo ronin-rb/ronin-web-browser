@@ -21,6 +21,18 @@ describe Ronin::Web::Browser::Agent do
       after { Ronin::Support::Network::HTTP.proxy = nil }
     end
 
+    context "when given the url: keyword argument" do
+      let(:url) { 'https://example.com/' }
+      subject   { described_class.new(url: url) }
+
+      it 'navigates to the url' do
+        expect(subject.url).to eql(url)
+        expect(subject.current_url).to eql(url)
+      end
+
+      after { subject.quit }
+    end
+
     context "when given the proxy: keyword argument" do
       let(:proxy_host) { 'example.com' }
       let(:proxy_port) { 8080 }
