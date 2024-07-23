@@ -117,6 +117,9 @@ module Ronin
       # @option kwargs [Boolean] headless (true)
       #   Controls whether the browser will start in headless or visible mode.
       #
+      # @option kwargs [String, nil] url
+      #   Provides url for browser to navigate to after initialization.
+      #
       # @option kwargs [String, URI::HTTP, Addressible::URI, Hash, nil] :proxy (Ronin::Support::Network::HTTP.proxy)
       #   The proxy to send all browser requests through.
       #
