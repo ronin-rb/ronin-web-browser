@@ -53,12 +53,16 @@ module Ronin
         # @param [String, nil] url
         #   Provides url for browser to navigate to after initialization.
         #
+        # @param [Hash{Symbol => Object}, Ferrum::Cookies::Cookie, nil] cookie
+        #   Provides cookie to set for browser after initialization.
+        #
         # @param [Hash{Symbol => Object}] kwargs
         #   Additional keyword arguments for `Ferrum::Browser#initialize`.
         #
         def initialize(visible:  false,
                        headless: !visible,
                        proxy:    Ronin::Support::Network::HTTP.proxy,
+                       cookie:   nil,
                        url:      nil,
                        **kwargs)
           proxy = case proxy
@@ -87,6 +91,8 @@ module Ronin
           @proxy    = proxy
 
           super(headless: headless, proxy: proxy, **kwargs)
+
+          cookies.set(cookie) if cookie
           go_to(url) if url
         end
 
