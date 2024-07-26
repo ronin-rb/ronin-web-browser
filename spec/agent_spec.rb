@@ -33,6 +33,37 @@ describe Ronin::Web::Browser::Agent do
       after { subject.quit }
     end
 
+    context "when given the cookie: keyword argument" do
+      subject { described_class.new(cookie: cookie) }
+
+      let(:name)        { '_foo_sess' }
+      let(:value)       { 'eyJmb28iOiJiYXIifQ:1pQcTx:UufiSnuPIjNs7zOAJS0UpqnyvRt7KET7BVes0I8LYbA' }
+      let(:domain)      { 'foo-app.com' }
+      let(:cookie_hash) { { "name" => name, "value" => value, "domain" => domain, "session" => true } }
+
+      context 'when the cookie is a hash' do
+        let(:cookie) { cookie_hash }
+
+        it 'sets the cookie with the correct attributes' do
+          result = subject.cookies[name]
+          expect(result).to be_a Ferrum::Cookies::Cookie
+          expect(result.attributes > cookie).to be true
+        end
+      end
+
+      context 'when the cookie is a Cookie instance' do
+        let(:cookie) { Ferrum::Cookies::Cookie.new(**cookie_hash) }
+
+        it 'sets the cookie with the correct attributes' do
+          result = subject.cookies[name]
+          expect(result).to be_a Ferrum::Cookies::Cookie
+          expect(result.attributes > cookie_hash).to be true
+        end
+      end
+
+      after { subject.quit }
+    end
+
     context "when given the proxy: keyword argument" do
       let(:proxy_host) { 'example.com' }
       let(:proxy_port) { 8080 }
