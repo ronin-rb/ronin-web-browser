@@ -114,13 +114,13 @@ module Ronin
       # @option kwargs [Boolean] :visible (false)
       #   Controls whether the browser will start in visible or headless mode.
       #
-      # @option kwargs [Boolean] headless (true)
+      # @option kwargs [Boolean] :headless (true)
       #   Controls whether the browser will start in headless or visible mode.
       #
-      # @option kwargs [Hash{Symbol => Object}, Ferrum::Cookies::Cookie, nil] cookie
+      # @option kwargs [Hash{Symbol => Object}, Ferrum::Cookies::Cookie, nil] :cookie
       #   Provides cookie to set for browser after initialization.
       #
-      # @option kwargs [String, nil] url
+      # @option kwargs [String, nil] :url
       #   Provides url for browser to navigate to after initialization.
       #
       # @option kwargs [String, URI::HTTP, Addressible::URI, Hash, nil] :proxy (Ronin::Support::Network::HTTP.proxy)
