@@ -19,6 +19,7 @@
 #
 
 require_relative 'browser/agent'
+require_relative 'browser/mixin'
 require_relative 'browser/version'
 
 module Ronin
