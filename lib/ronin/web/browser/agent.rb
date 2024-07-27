@@ -39,7 +39,8 @@ module Ronin
         attr_reader :proxy
 
         #
-        # Initializes the browser agent, and optionally navigates to the url, if provided.
+        # Initializes the browser agent, and optionally navigates to the url,
+        # if provided.
         #
         # @param [Boolean] visible
         #   Controls whether the browser will start in visible or headless mode.
