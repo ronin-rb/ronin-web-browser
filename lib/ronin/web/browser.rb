@@ -19,6 +19,7 @@
 #
 
 require 'ronin/web/browser/agent'
+require 'ronin/web/browser/mixin'
 require 'ronin/web/browser/version'
 
 module Ronin
