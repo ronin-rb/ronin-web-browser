@@ -405,6 +405,68 @@ describe Ronin::Web::Browser::Agent do
     after { subject.quit }
   end
 
+  describe "#cookies=" do
+    let(:domain)  { 'example.com' }
+
+    let(:name1)   { 'lorem' }
+    let(:value1)  { 'ipsum' }
+
+    let(:name2)   { 'dolor' }
+    let(:value2)  { 'sit amet' }
+
+    context "when the cookie_values are hashes" do
+      let(:cookie1)       { { name: name1, value: value1, domain: domain } }
+      let(:cookie2)       { { name: name2, value: value2, domain: domain } }
+      let(:cookie_values) { [cookie1, cookie2] }
+
+      it "sets the cookies" do
+        subject.cookies = (cookie_values)
+
+        expect(subject.cookies[name1]).to be_kind_of(Ferrum::Cookies::Cookie)
+        expect(subject.cookies[name1].value).to eql(value1)
+
+        expect(subject.cookies[name2]).to be_kind_of(Ferrum::Cookies::Cookie)
+        expect(subject.cookies[name2].value).to eql(value2)
+      end
+
+      context "when the browser already has cookies" do
+        let(:previous_name)   { 'foo' }
+        let(:previous_value)  { 'bar' }
+
+        before do
+          subject.set_cookie(previous_name,previous_value, domain: domain)
+        end
+
+        it "clears the existing cookies and sets the new ones" do
+          subject.cookies = (cookie_values)
+          expect(subject.cookies[previous_name]).to be_nil
+
+          expect(subject.cookies[name1]).to be_kind_of(Ferrum::Cookies::Cookie)
+          expect(subject.cookies[name1].value).to eql(value1)
+
+          expect(subject.cookies[name2]).to be_kind_of(Ferrum::Cookies::Cookie)
+          expect(subject.cookies[name2].value).to eql(value2)
+        end
+      end
+    end
+
+    context "when the cookie_values are instances of Ferrum::Cookies::Cookie" do
+      let(:cookie1)       { Ferrum::Cookies::Cookie.new(name: name1, value: value1, domain: domain) }
+      let(:cookie2)       { Ferrum::Cookies::Cookie.new(name: name2, value: value2, domain: domain) }
+      let(:cookie_values) { [cookie1, cookie2] }
+
+      it "sets the cookies" do
+        subject.cookies = (cookie_values)
+
+        expect(subject.cookies[name1]).to be_kind_of(Ferrum::Cookies::Cookie)
+        expect(subject.cookies[name1].value).to eql(value1)
+
+        expect(subject.cookies[name2]).to be_kind_of(Ferrum::Cookies::Cookie)
+        expect(subject.cookies[name2].value).to eql(value2)
+      end
+    end
+  end
+
   describe "#set_cookie" do
     let(:name)   { 'foo' }
     let(:value)  { 'bar' }
