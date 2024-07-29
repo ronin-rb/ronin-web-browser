@@ -388,10 +388,10 @@ module Ronin
         #
         # Clears existing cookies and sets each cookie provided in array.
         #
-        # @since 0.2.0
-        #
         # @param [Array<Hash{Symbol => Object}, Ferrum::Cookies::Cookie>] cookie_values
         #   The cookies to be set for the browser.
+        #
+        # @since 0.2.0
         #
         def cookies=(cookie_values)
           cookies.clear
