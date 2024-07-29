@@ -43,6 +43,9 @@ module Ronin
         # @option kwargs [Boolean] :headless (true)
         #   Controls whether the browser will start in headless or visible mode.
         #
+        # @option kwargs [String, nil] :cookie_file
+        #   Provides path to file containing cookies to load and set for browser.
+        #
         # @option kwargs [Hash{Symbol => Object}, Ferrum::Cookies::Cookie, nil] :cookie
         #   Provides cookie to set for browser after initialization.
         #
