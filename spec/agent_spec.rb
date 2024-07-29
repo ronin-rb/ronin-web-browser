@@ -33,6 +33,31 @@ describe Ronin::Web::Browser::Agent do
       after { subject.quit }
     end
 
+    context "when given the cookie_file: keyword argument" do
+      let(:fixtures_dir) { File.join(__dir__,'fixtures') }
+      let(:cookie_file) { File.join(fixtures_dir,'cookies.txt') }
+
+      subject { described_class.new(cookie_file: cookie_file) }
+
+      it "must parse and load all cookies from the cookie file" do
+        cookies = subject.cookies.to_a
+
+        expect(cookies).to all(be_kind_of(Ferrum::Cookies::Cookie))
+        expect(cookies.length).to eq(2)
+        expect(cookies[0].name).to eq('foo')
+        expect(cookies[0].value).to eq('bar')
+        expect(cookies[0].domain).to eq('example.com')
+        expect(cookies[0].secure?).to be(true)
+
+        expect(cookies[1].name).to eq('baz')
+        expect(cookies[1].value).to eq('qux')
+        expect(cookies[1].domain).to eq('other.com')
+        expect(cookies[1].http_only?).to be(true)
+      end
+
+      after { subject.quit }
+    end
+
     context "when given the cookie: keyword argument" do
       subject { described_class.new(cookie: cookie) }
 
