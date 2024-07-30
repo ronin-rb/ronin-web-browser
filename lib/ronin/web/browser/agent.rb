@@ -18,10 +18,10 @@
 # along with ronin-web-browser.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/web/browser/cookie'
-require 'ronin/web/browser/cookie_file'
-require 'ronin/support/network/http'
+require_relative 'cookie'
+require_relative 'cookie_file'
 
+require 'ronin/support/network/http'
 require 'ferrum'
 require 'uri'
 

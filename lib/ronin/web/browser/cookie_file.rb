@@ -18,7 +18,7 @@
 # along with ronin-web-browser.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/web/browser/cookie'
+require_relative 'cookie'
 
 module Ronin
   module Web
