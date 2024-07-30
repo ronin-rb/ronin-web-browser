@@ -18,8 +18,8 @@
 # along with ronin-web-browser.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/web/browser/agent'
-require 'ronin/web/browser/version'
+require_relative 'browser/agent'
+require_relative 'browser/version'
 
 module Ronin
   module Web
