@@ -125,7 +125,7 @@ describe Ronin::Web::Browser::Cookie do
         end
       end
 
-      context "when the Stirng contains an unknown attribute" do
+      context "when the String contains an unknown attribute" do
         let(:unknown_field) { "Foo=Bar" }
         let(:string)        { "#{name}=#{value}; #{unknown_field}" }
 
@@ -136,7 +136,7 @@ describe Ronin::Web::Browser::Cookie do
         end
       end
 
-      context "when the Stirng contains an unknown flag" do
+      context "when the String contains an unknown flag" do
         let(:unknown_flag) { "Foo" }
         let(:string)       { "#{name}=#{value}; #{unknown_flag}" }
 
