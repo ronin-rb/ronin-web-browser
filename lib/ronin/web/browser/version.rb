@@ -2,7 +2,7 @@
 #
 # ronin-web-browser - An automated Chrome API.
 #
-# Copyright (c) 2022-2024 Hal Brodigan (postmodern.mod3@gmail.com)
+# Copyright (c) 2022-2026 Hal Brodigan (postmodern.mod3@gmail.com)
 #
 # ronin-web-browser is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published
