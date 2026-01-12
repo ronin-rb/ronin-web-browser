@@ -25,4 +25,4 @@ dependencies:
   ferrum: ~> 0.13
 
 development_dependencies:
-  bundler: ~> 2.0
+  bundler: ">= 2.0.0"
